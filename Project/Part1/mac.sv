@@ -1,4 +1,4 @@
-module unpipelined_mac #(
+module mac #(
 parameter INW = 16,
 parameter OUTW = 64
 )(
