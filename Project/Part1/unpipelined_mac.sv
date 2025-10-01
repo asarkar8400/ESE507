@@ -9,9 +9,7 @@ input clk, reset, init_acc, input_valid
 
 logic signed [OUTW-1:0] product;
 
-always_comb begin
-    product = input0 * input1; //first multiplier
-end
+assign product = input0 * input1; //first multiplier
 
     always_ff @(posedge clk) begin
         if(reset) begin
