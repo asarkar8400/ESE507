@@ -1,5 +1,5 @@
 module mac_pipe #(
-parameter INW = 16,
+parameter INW = 16, 
 parameter OUTW = 64
 )(
 input signed [INW-1:0] input0, input1, init_value,
@@ -7,7 +7,9 @@ output logic signed [OUTW-1:0] out,
 input clk, reset, init_acc, input_valid
 );
 
-logic signed [OUTW-1:0] product, q;
+// logic signed [OUTW-1:0] product, q;
+// edited based on prof feedback, OUTW bit size results in excess bits that's regarded by synthesizer 
+logic signed [INW*2-1:0] product, q;
 logic input_valid_d; // delayed by one clk
 
 assign product = input0 * input1; // first multiplier
