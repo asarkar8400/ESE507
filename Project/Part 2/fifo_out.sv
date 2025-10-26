@@ -24,7 +24,7 @@ module memory_dual_port #(
     end
 endmodule
 ----------------------------------------------------------------------------
-// axi fifod module
+// axi fifo module
 module fifo_out #(
     parameter OUTW = 24,
     parameter DEPTH = 19,
