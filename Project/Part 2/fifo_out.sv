@@ -1,6 +1,6 @@
-// dual port memory module
+//milder's design
 module memory_dual_port #(
-        parameter                WIDTH=16, SIZE=64,
+        parameter                WIDTH=24, SIZE=19,
         localparam               LOGSIZE=$clog2(SIZE)
     )(
         input [WIDTH-1:0]        data_in,
@@ -23,8 +23,8 @@ module memory_dual_port #(
             mem[write_addr] <= data_in;            
     end
 endmodule
-----------------------------------------------------------------------------
-// axi fifo module
+
+// our axi fifo
 module fifo_out #(
     parameter OUTW = 24,
     parameter DEPTH = 19,
@@ -67,7 +67,7 @@ assign wr_en = IN_AXIS_TVALID && IN_AXIS_TREADY;
 assign rd_en = OUT_AXIS_TVALID && OUT_AXIS_TREADY;
 
 // reset logic
-always_ff @(posedge clk or posedge reset) begin
+always_ff @(posedge clk) begin
     if (reset) begin
         wr_ptr   <= '0;
         rd_ptr   <= '0;
@@ -76,11 +76,19 @@ always_ff @(posedge clk or posedge reset) begin
     else begin
         // write logic
         if (wr_en) begin
-            wr_ptr <= wr_ptr + 1;
+            if (wr_ptr == DEPTH - 1) begin
+                wr_ptr <= '0;
+            end else begin
+                wr_ptr <= wr_ptr + 1;
+            end
         end
         // read logic
         if (rd_en) begin
-            rd_ptr <= rd_ptr + 1;
+            if (rd_ptr == DEPTH - 1) begin
+                rd_ptr <= '0;
+            end else begin
+                rd_ptr <= rd_ptr + 1;
+            end
         end
         // capacity logic
         if (wr_en && !rd_en) begin
@@ -91,5 +99,4 @@ always_ff @(posedge clk or posedge reset) begin
         end
     end
 end
-
 endmodule
