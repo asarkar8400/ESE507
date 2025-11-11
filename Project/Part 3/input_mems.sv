@@ -62,11 +62,11 @@ module input_mems #(
 
     memory #(.WIDTH(INW), .SIZE(R*C)) x_memory 
     (
-        .clk    (clk),
-        .data_in(AXIS_TDATA),
-        .data_out(x_data_out),
-        .addr   (x_addr),
-        .wr_en  (x_wr_en)
+        .clk (clk),
+        .data_in (AXIS_TDATA),
+        .data_out (x_data_out),
+        .addr (x_addr),
+        .wr_en (x_wr_en)
     );
 
     assign W_data = w_data_out;
@@ -108,7 +108,7 @@ module input_mems #(
 
         case (state)
             IDLE: begin
-                AXIS_TREADY = 1; // set as ready
+                AXIS_TREADY = 1;            // set as ready
                 if (valid_and_ready) begin
                     if (new_W) begin        // if new_W is 1, load the K and W vals 
                         K_next = TUSER_K;   // val of K
@@ -186,7 +186,7 @@ module input_mems #(
         endcase
     end
 
-    always_ff @(posedge clk) begin
+    always_ff @(posedge clk) begin  // update the states of everything
         if (reset) begin
             state <= IDLE;
             K_reg <= '0;
@@ -202,7 +202,7 @@ module input_mems #(
         end
     end
 
-    // assign to outputs
+    // assign vals to outputs
     assign K = K_reg;
     assign B = B_reg;
 
